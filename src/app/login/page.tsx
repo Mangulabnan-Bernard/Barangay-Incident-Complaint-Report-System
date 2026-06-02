@@ -2,6 +2,9 @@ import { Suspense } from "react";
 import { LoginForm } from "@/components/login-form";
 
 export default function LoginPage() {
+  // Show the one-click demo logins only when running on mock data.
+  const demoMode =
+    process.env.USE_MOCK_DB === "true" || !process.env.DATABASE_URL;
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 to-slate-100 p-4 dark:from-slate-950 dark:to-slate-900">
       <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -15,7 +18,7 @@ export default function LoginPage() {
           </p>
         </div>
         <Suspense>
-          <LoginForm />
+          <LoginForm demoMode={demoMode} />
         </Suspense>
       </div>
     </div>
