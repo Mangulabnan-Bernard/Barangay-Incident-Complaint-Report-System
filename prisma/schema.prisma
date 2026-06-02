@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model activity_logs {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @db.DateTime(0)
+  message   String   @db.Text
+}
+
+model admin {
+  admin_id       Int    @id @default(autoincrement())
+  admin_name     String @db.VarChar(200)
+  admin_email    String @db.VarChar(200)
+  admin_password String @db.VarChar(200)
+  role           String @db.VarChar(50)
+}
+
+model archived_records {
+  id            Int      @id @default(autoincrement())
+  record_type   String   @db.VarChar(50)
+  archived_data String   @db.LongText
+  archived_at   DateTime @default(now()) @db.Timestamp(0)
+}
+
+model incidents {
+  id                Int       @id @default(autoincrement())
+  date_recorded     DateTime  @default(now()) @db.Date
+  complaint         String    @db.VarChar(255)
+  current_address   String    @db.VarChar(255)
+  age               String    @db.VarChar(11)
+  contact           String    @db.VarChar(20)
+  complainee        String    @db.VarChar(255)
+  ccontact          String?   @db.VarChar(20)
+  caddress          String    @db.VarChar(200)
+  cage              Int?
+  status            String    @db.VarChar(50)
+  action            String    @db.VarChar(255)
+  incident          String    @db.VarChar(255)
+  incident_details  String    @db.Text
+  datetime_incident DateTime? @db.DateTime(0)
+  report_status     String?   @db.VarChar(200)
+  expected_arrival  DateTime? @db.Date
+  time_hearing      DateTime? @db.Time(0)
+  date_of_arrival   DateTime? @db.Date
+  punong_barangay   String    @db.VarChar(200)
+  archived          Boolean   @default(false)
+  description       String?   @db.VarChar(200)
+  incident_involve  String?   @db.VarChar(255)
+  witnesses         String?   @db.VarChar(255)
+  user              String    @db.VarChar(255)
+  img               Bytes?    @db.Blob
+  caseNo            Int
+  failReason        String?   @db.VarChar(255)
+}
+
+model logs {
+  id      Int      @id @default(autoincrement())
+  user    String   @db.VarChar(50)
+  logdate DateTime @db.DateTime(0)
+  action  String   @db.Text
+}
+
+model officials {
+  OfficialID Int      @id @default(autoincrement())
+  Position   String   @db.VarChar(255)
+  LastName   String   @db.VarChar(255)
+  FirstName  String   @db.VarChar(255)
+  MiddleName String   @db.VarChar(255)
+  Contact    String   @db.VarChar(20)
+  Address    String   @db.VarChar(255)
+  StartTerm  DateTime @db.Date
+  EndTerm    DateTime @db.Date
+  status     String   @db.VarChar(99)
+}
+
+model residents {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(255)
+  gender   String @db.VarChar(10)
+  address  String @db.VarChar(255)
+  user     String @db.VarChar(50)
+  password String @db.VarChar(255)
+  role     String @db.VarChar(50)
+}
+
+model summon {
+  id                Int      @id @default(autoincrement())
+  complainant_name  String   @db.VarChar(255)
+  case_number       String   @db.VarChar(255)
+  respondent_name   String   @db.VarChar(255)
+  complaint_details String   @db.Text
+  date              DateTime @db.Date
+  created_at        DateTime @default(now()) @db.Timestamp(0)
+}
+
+model summons {
+  id                   Int       @id @default(autoincrement())
+  respondent_name      String    @db.VarChar(255)
+  date                 DateTime  @db.Date
+  day_of_summons       Int
+  month_of_summons     String    @db.VarChar(255)
+  year_of_summons      Int
+  prepared_by          String    @db.VarChar(255)
+  barangay_secretary   String    @db.VarChar(255)
+  serving_day          Int
+  serving_month        String    @db.VarChar(255)
+  serving_year         Int
+  respondents          String    @db.VarChar(255)
+  respondent1          String?   @db.VarChar(255)
+  respondent2          String?   @db.VarChar(255)
+  respondent3          String?   @db.VarChar(255)
+  respondent4          String?   @db.VarChar(255)
+  dwelling_person_name String?   @db.VarChar(255)
+  office_person_name   String?   @db.VarChar(255)
+  complainee1          String?   @db.VarChar(255)
+  date1                DateTime? @db.Date
+  complainee2          String?   @db.VarChar(255)
+  date2                DateTime? @db.Date
+}
+
+model zone_leaders {
+  id       Int    @id @default(autoincrement())
+  zone     String @db.VarChar(50)
+  username String @unique @db.VarChar(50)
+  password String @db.VarChar(255)
+}
