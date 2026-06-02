@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export function LoginForm({ demoMode = false }: { demoMode?: boolean }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/dashboard";
 
@@ -27,9 +26,11 @@ export function LoginForm({ demoMode = false }: { demoMode?: boolean }) {
         toast.error(data.error || "Login failed");
         return;
       }
-      toast.success(`Welcome, ${data.user.name}`);
-      router.replace(next);
-      router.refresh();
+      const dest =
+        next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
+      // Full navigation (not router.push) so the freshly-set auth cookie is
+      // sent on the request — a client-side push can bounce back to /login.
+      window.location.assign(dest);
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
